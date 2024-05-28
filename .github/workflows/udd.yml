@@ -3,6 +3,7 @@ name: update-deno-dependencies
 
 on:
   schedule:
+    workflow_dispatch:
     - cron: "0 0 * * *"
 
 jobs:
