@@ -1,8 +1,8 @@
 import { assert, exportPages, importPages, is } from "./deps.ts";
 
 const sid = Deno.env.get("SID");
-const exportingProjectName = Deno.env.get("SOURCE_PROJECT_NAME"); //インポート元(本来はprivateプロジェクト)
-const importingProjectName = Deno.env.get("DESTINATION_PROJECT_NAME"); //インポート先(publicプロジェクト)
+const exportingProjectName = Deno.env.get("SOURCE_PROJECT_NAME");
+const importingProjectName = Deno.env.get("DESTINATION_PROJECT_NAME");
 const exportJsonPath = Deno.env.get("EXPORT_JSON_PATH");
 const shouldDuplicateByDefault =
   Deno.env.get("SHOULD_DUPLICATE_BY_DEFAULT") === "True";
@@ -38,9 +38,9 @@ if (exportJsonPath) {
 }
 
 const importingPages = pages.filter(({ lines }) => {
-  if (lines.some((line: string | { text: string }) => getLineText(line).includes("[private.icon]"))) {
+  if (lines.some((line: string | { text: string }) => getLineText(line).includes("[private]"))) {
     return false;
-  } else if (lines.some((line: string | { text: string }) => getLineText(line).includes("[public.icon]"))) {
+  } else if (lines.some((line: string | { text: string }) => getLineText(line).includes("[public]"))) {
     return true;
   } else {
     return shouldDuplicateByDefault;
