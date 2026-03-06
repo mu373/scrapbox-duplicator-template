@@ -27,7 +27,7 @@ jobs:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: us-east-1
       - name: Download export json from S3
-        run: aws s3 cp s3://${{ vars.S3_BUCKET }}/${{ vars.S3_PREFIX }}/${{ vars.SOURCE_PROJECT_NAME }}.json export.json
+        run: aws s3 cp s3://${{ vars.S3_BUCKET }}/${{ vars.S3_PREFIX }}/${{ vars.SOURCE_PROJECT_NAME }}/latest.json export.json
 
       - name: Run duplicator
         run: deno run --allow-net=scrapbox.io --allow-read=./ --allow-write --allow-env index.ts
