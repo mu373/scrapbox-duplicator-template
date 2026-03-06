@@ -32,7 +32,7 @@ exported to S3 (e.g. via
 
 | Variable           | Type     | Description                                        |
 | ------------------ | -------- | -------------------------------------------------- |
-| `AWS_ROLE_ARN`     | variable | IAM role ARN for OIDC authentication               |
-| `S3_BUCKET`        | variable | S3 bucket name                                     |
-| `S3_PREFIX`        | variable | S3 key prefix (e.g. `scrapbox-exports/projects`)   |
+| `AWS_ROLE_ARN`     | secret   | IAM role ARN for OIDC authentication               |
+| `S3_BUCKET`        | secret   | S3 bucket name                                     |
+| `S3_PREFIX`        | secret   | S3 key prefix (e.g. `scrapbox-exports/projects`)   |
 | `EXPORT_JSON_PATH` | env      | Path to the downloaded JSON file (set in workflow) |
