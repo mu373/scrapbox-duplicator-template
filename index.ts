@@ -1,4 +1,5 @@
-import { assert, exportPages, importPages, is } from "./deps.ts";
+import "jsr:@std/dotenv/load";
+import { exportPages, importPages } from "./scrapbox.ts";
 
 const sid = Deno.env.get("SID");
 const exportingProjectName = Deno.env.get("SOURCE_PROJECT_NAME");
@@ -7,7 +8,9 @@ const exportJsonPath = Deno.env.get("EXPORT_JSON_PATH");
 const shouldDuplicateByDefault =
   Deno.env.get("SHOULD_DUPLICATE_BY_DEFAULT") === "True";
 
-assert(importingProjectName, is.String);
+if (!importingProjectName) {
+  throw new Error("DESTINATION_PROJECT_NAME is required");
+}
 
 const getLineText = (line: string | { text: string }): string =>
   typeof line === "string" ? line : line.text;
@@ -20,18 +23,17 @@ if (exportJsonPath) {
   pages = parsed.pages;
   console.log(`Loaded ${pages.length} pages from json.`);
 } else {
-  assert(sid, is.String);
-  assert(exportingProjectName, is.String);
+  if (!sid) throw new Error("SID is required when not using EXPORT_JSON_PATH");
+  if (!exportingProjectName) {
+    throw new Error("SOURCE_PROJECT_NAME is required");
+  }
   console.log(`Exporting a json file from "/${exportingProjectName}"...`);
   const result = await exportPages(exportingProjectName, {
     sid,
     metadata: true,
   });
   if (!result.ok) {
-    const error = new Error();
-    error.name = `${result.value.name} when exporting a json file`;
-    error.message = result.value.message;
-    throw error;
+    throw result.value;
   }
   pages = result.value.pages;
   console.log(`Exported ${pages.length} pages.`);
@@ -58,7 +60,7 @@ const importingPages = pages.filter(({ lines }) => {
 if (importingPages.length === 0) {
   console.log("No page to be imported found.");
 } else {
-  assert(sid, is.String);
+  if (!sid) throw new Error("SID is required for importing pages");
   console.log(
     `Importing ${importingPages.length} pages to "/${importingProjectName}"...`,
   );
@@ -68,10 +70,7 @@ if (importingPages.length === 0) {
     sid,
   });
   if (!result.ok) {
-    const error = new Error();
-    error.name = `${result.value.name} when importing pages`;
-    error.message = result.value.message;
-    throw error;
+    throw result.value;
   }
   console.log(result.value);
 }
