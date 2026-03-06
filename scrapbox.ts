@@ -1,7 +1,11 @@
+// Minimal Scrapbox REST API client for page import/export.
+// Ref: https://scrapbox.io/help-jp/API
+
 const SCRAPBOX_HOST = "scrapbox.io";
 
 const cookie = (sid: string) => `connect.sid=${sid}`;
 
+/** Fetch CSRF token from the Scrapbox user profile API. */
 const getCSRFToken = async (sid: string): Promise<string> => {
   const res = await fetch(`https://${SCRAPBOX_HOST}/api/users/me`, {
     headers: { Cookie: cookie(sid) },
@@ -15,6 +19,7 @@ const getCSRFToken = async (sid: string): Promise<string> => {
   return user.csrfToken;
 };
 
+/** Import pages into a project via POST /api/page-data/import/{project}.json */
 // deno-lint-ignore no-explicit-any
 export const importPages = async (
   project: string,
@@ -58,6 +63,7 @@ export const importPages = async (
   return { ok: true, value: message };
 };
 
+/** Export all pages from a project via GET /api/page-data/export/{project}.json */
 export const exportPages = async (
   project: string,
   init: { sid: string; metadata: boolean },
