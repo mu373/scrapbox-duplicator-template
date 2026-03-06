@@ -30,9 +30,9 @@ Instead of calling the Scrapbox API directly, pages can be read from a JSON file
 exported to S3 (e.g. via
 [scrapbox-export-s3](https://github.com/mu373/scrapbox-export-s3)).
 
-| Variable           | Type     | Description                                        |
-| ------------------ | -------- | -------------------------------------------------- |
-| `AWS_ROLE_ARN`     | secret   | IAM role ARN for OIDC authentication               |
-| `S3_BUCKET`        | secret   | S3 bucket name                                     |
-| `S3_PREFIX`        | secret   | S3 key prefix (e.g. `scrapbox-exports/projects`)   |
-| `EXPORT_JSON_PATH` | env      | Path to the downloaded JSON file (set in workflow) |
+| Variable           | Type   | Description                                        |
+| ------------------ | ------ | -------------------------------------------------- |
+| `AWS_ROLE_ARN`     | secret | IAM role ARN for OIDC authentication               |
+| `S3_BUCKET`        | secret | S3 bucket name                                     |
+| `S3_PREFIX`        | secret | S3 key prefix (e.g. `scrapbox-exports/projects`)   |
+| `EXPORT_JSON_PATH` | env    | Path to the downloaded JSON file (set in workflow) |
