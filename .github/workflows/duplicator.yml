@@ -3,23 +3,31 @@ name: Duplicater
 on:
   workflow_dispatch:
   schedule:
-    # - cron: '0 21 * * *' # JST 6:00
+# - cron: '0 21 * * *' # JST 6:00
 
 env:
   SID: ${{ secrets.SID }}
   PROJECT_NAME: ${{ secrets.PROJECT_NAME }}
-  SOURCE_PROJECT_NAME: ${{ secrets.SOURCE_PROJECT_NAME }}
-  DESTINATION_PROJECT_NAME: ${{ secrets.DESTINATION_PROJECT_NAME }}
-  SHOULD_DUPLICATE_BY_DEFAULT: ${{ secrets.SHOULD_DUPLICATE_BY_DEFAULT }}
+  SOURCE_PROJECT_NAME: ${{ vars.SOURCE_PROJECT_NAME }}
+  DESTINATION_PROJECT_NAME: ${{ vars.DESTINATION_PROJECT_NAME }}
+  SHOULD_DUPLICATE_BY_DEFAULT: ${{ vars.SHOULD_DUPLICATE_BY_DEFAULT }}
+  EXPORT_JSON_PATH: export.json
 
 jobs:
   build:
     permissions:
-      contents: 'write'
+      contents: "write"
+      id-token: "write"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: denoland/setup-deno@v1
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+      - name: Download export json from S3
+        run: aws s3 cp s3://${{ vars.S3_BUCKET }}/${{ vars.S3_PREFIX }}/${{ vars.SOURCE_PROJECT_NAME }}.json export.json
 
-      - name: Export from Scrapbox(/PROJECT_NAME to PROJECT_NAME.json)
+      - name: Run duplicator
         run: deno run --allow-net=scrapbox.io --allow-read=./ --allow-write --allow-env index.ts
