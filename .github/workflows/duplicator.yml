@@ -3,7 +3,7 @@ name: Duplicater
 on:
   workflow_dispatch:
   schedule:
-    # - cron: '0 21 * * *' # JST 6:00
+# - cron: '0 21 * * *' # JST 6:00
 
 env:
   SID: ${{ secrets.SID }}
@@ -16,8 +16,8 @@ env:
 jobs:
   build:
     permissions:
-      contents: 'write'
-      id-token: 'write'
+      contents: "write"
+      id-token: "write"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

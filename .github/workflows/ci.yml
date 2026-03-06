@@ -14,4 +14,3 @@ jobs:
         run: deno lint
       - name: Run type check
         run: deno cache *.ts
-

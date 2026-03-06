@@ -38,9 +38,17 @@ if (exportJsonPath) {
 }
 
 const importingPages = pages.filter(({ lines }) => {
-  if (lines.some((line: string | { text: string }) => getLineText(line).includes("[private]"))) {
+  if (
+    lines.some((line: string | { text: string }) =>
+      getLineText(line).includes("[private]")
+    )
+  ) {
     return false;
-  } else if (lines.some((line: string | { text: string }) => getLineText(line).includes("[public]"))) {
+  } else if (
+    lines.some((line: string | { text: string }) =>
+      getLineText(line).includes("[public]")
+    )
+  ) {
     return true;
   } else {
     return shouldDuplicateByDefault;
