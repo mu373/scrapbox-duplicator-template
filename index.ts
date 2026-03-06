@@ -1,4 +1,4 @@
-import "jsr:@std/dotenv/load";
+import "jsr:@std/dotenv@0.225.6/load";
 import { exportPages, importPages } from "./scrapbox.ts";
 
 const sid = Deno.env.get("SID");

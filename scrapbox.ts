@@ -20,9 +20,9 @@ const getCSRFToken = async (sid: string): Promise<string> => {
 };
 
 /** Import pages into a project via POST /api/page-data/import/{project}.json */
-// deno-lint-ignore no-explicit-any
 export const importPages = async (
   project: string,
+  // deno-lint-ignore no-explicit-any
   data: { pages: any[] },
   init: { sid: string },
 ): Promise<{ ok: true; value: string } | { ok: false; value: Error }> => {
